@@ -8,11 +8,11 @@
 /* Tarjeta contenida: formulario a la izquierda, escena enmarcada a la derecha. */
 .card {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1120px;
   height: min(760px, calc(100vh - 32px));
   min-height: 600px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(340px, 0.8fr) minmax(0, 1.2fr);
   gap: var(--space-3);
   padding: var(--space-3);
   background: var(--color-surface);
@@ -25,14 +25,13 @@
 .formSide {
   display: flex;
   flex-direction: column;
-  padding: var(--space-6) var(--space-8);
+  padding: var(--space-6);
   overflow-y: auto;
 }
 
 /* Logo y formulario comparten la misma columna para quedar alineados. */
 .brand,
-.formInner,
-.footer {
+.formInner {
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
