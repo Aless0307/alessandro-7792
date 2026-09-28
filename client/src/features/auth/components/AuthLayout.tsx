@@ -20,7 +20,10 @@ export function AuthLayout({ isSubmitting, fieldsProgress, children }: AuthLayou
     <div className={styles.page}>
       <div className={styles.card}>
         <main className={styles.formSide}>
-          <Logo />
+          <div className={styles.brand}>
+            <Logo />
+            <p className={styles.tagline}>Apuestas en carreras de caracoles</p>
+          </div>
           <div className={styles.formInner}>{children}</div>
         </main>
 

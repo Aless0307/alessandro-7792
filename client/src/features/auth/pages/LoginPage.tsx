@@ -35,7 +35,6 @@ export function LoginPage() {
     <AuthLayout isSubmitting={isSubmitting} fieldsProgress={form.progress}>
       <header className={styles.header}>
         <h1 className={styles.title}>Inicia sesión</h1>
-        <p className={styles.subtitle}>Usa el correo y la contraseña con los que te registraste.</p>
       </header>
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>

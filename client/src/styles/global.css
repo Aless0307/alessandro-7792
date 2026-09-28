@@ -26,14 +26,15 @@
   --color-danger-bg: #fbecec;
   --color-focus: var(--hydrangea-400);
 
-  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
-  --font-body: 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-display: 'Figtree Variable', system-ui, sans-serif;
+  --font-body: 'Figtree Variable', system-ui, sans-serif;
 
   --text-sm: 0.8125rem;
+  --text-label: 0.875rem;
   --text-base: 0.9375rem;
   --text-lg: 1.125rem;
   --text-xl: 1.5rem;
-  --text-2xl: 2.25rem;
+  --text-2xl: 1.75rem;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -79,7 +80,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 button,

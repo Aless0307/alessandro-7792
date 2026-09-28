@@ -43,7 +43,6 @@ export function RegisterPage() {
     <AuthLayout isSubmitting={isSubmitting} fieldsProgress={form.progress}>
       <header className={styles.header}>
         <h1 className={styles.title}>Crea tu cuenta</h1>
-        <p className={styles.subtitle}>Empiezas con $0 de saldo y recargas cuando quieras.</p>
       </header>
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
