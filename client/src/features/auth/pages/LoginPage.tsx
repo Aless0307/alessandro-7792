@@ -4,6 +4,7 @@ import { ROUTES } from '../../../app/routes';
 import { Button } from '../../../components/ui/Button';
 import { TextField } from '../../../components/ui/TextField';
 import { useAuth } from '../authContext';
+import { TodayResults } from '../../races/components/TodayResults';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordField } from '../components/PasswordField';
 import { useAuthForm } from '../hooks/useAuthForm';
@@ -32,7 +33,11 @@ export function LoginPage() {
   });
 
   return (
-    <AuthLayout isSubmitting={isSubmitting} fieldsProgress={form.progress}>
+    <AuthLayout
+      isSubmitting={isSubmitting}
+      fieldsProgress={form.progress}
+      footer={<TodayResults />}
+    >
       <header className={styles.header}>
         <h1 className={styles.title}>Inicia sesión</h1>
       </header>

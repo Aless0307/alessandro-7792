@@ -11,9 +11,11 @@ interface AuthLayoutProps {
   // Fracción de campos válidos del formulario (0 a 1).
   fieldsProgress: number;
   children: ReactNode;
+  // Contenido opcional al pie de la columna del formulario.
+  footer?: ReactNode;
 }
 
-export function AuthLayout({ isSubmitting, fieldsProgress, children }: AuthLayoutProps) {
+export function AuthLayout({ isSubmitting, fieldsProgress, children, footer }: AuthLayoutProps) {
   const progress = isSubmitting ? 1 : fieldsProgress * FIELDS_SHARE;
 
   return (
@@ -25,6 +27,7 @@ export function AuthLayout({ isSubmitting, fieldsProgress, children }: AuthLayou
             <p className={styles.tagline}>Apuestas en carreras de caracoles</p>
           </div>
           <div className={styles.formInner}>{children}</div>
+          {footer && <div className={styles.footer}>{footer}</div>}
         </main>
 
         <section className={styles.sceneSide} aria-label="Pista de carreras">

@@ -1,4 +1,5 @@
 import { useTweenedNumber } from '../../../../lib/hooks/useTweenedNumber';
+import { SNAILS } from '../../../races/snails';
 import { Snail } from '../Snail';
 import {
   FINISH_T,
@@ -17,13 +18,18 @@ import styles from './GardenScene.module.css';
 // Jardín al amanecer después de la lluvia. La pista se pierde en el horizonte y el caracol
 // del usuario avanza (y se aleja) según `progress`, rebasando a los rivales.
 const PLAYER_LANE = 3;
-const RIVALS = [
-  { lane: 0, t: 0.36, shell: '#8e93d1' },
-  { lane: 1, t: 0.52, shell: '#b9a47c' },
-  { lane: 2, t: 0.22, shell: '#6f9c86' },
-  { lane: 4, t: 0.64, shell: '#b88a9a' },
-  { lane: 5, t: 0.44, shell: '#7f93aa' },
+// Los rivales son los caracoles del día, repartidos por la pista con sus colores.
+const RIVAL_POSITIONS = [
+  { lane: 0, t: 0.36 },
+  { lane: 1, t: 0.52 },
+  { lane: 2, t: 0.22 },
+  { lane: 4, t: 0.64 },
+  { lane: 5, t: 0.44 },
 ];
+const RIVALS = RIVAL_POSITIONS.map((position, index) => ({
+  ...position,
+  shell: SNAILS[index]!.shellColor,
+}));
 const SNAIL_SIZE = 1.3;
 const CRAWL_MS = 1400;
 

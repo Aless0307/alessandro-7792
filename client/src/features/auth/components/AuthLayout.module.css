@@ -31,7 +31,8 @@
 
 /* Logo y formulario comparten la misma columna para quedar alineados. */
 .brand,
-.formInner {
+.formInner,
+.footer {
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
@@ -75,11 +76,16 @@
     height: auto;
     min-height: 0;
     grid-template-columns: 1fr;
+    align-content: start;
   }
 
   .sceneSide {
     order: -1;
     height: 300px;
+  }
+
+  .formInner {
+    flex: none;
   }
 
   .formSide {
