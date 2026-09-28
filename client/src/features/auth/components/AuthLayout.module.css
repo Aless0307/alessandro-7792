@@ -1,0 +1,72 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+}
+
+/* Tarjeta contenida: formulario a la izquierda, escena enmarcada a la derecha. */
+.card {
+  width: 100%;
+  max-width: 1080px;
+  height: min(760px, calc(100vh - 32px));
+  min-height: 600px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 2px rgb(23 48 42 / 0.06),
+    0 24px 60px -24px rgb(23 48 42 / 0.25);
+}
+
+.formSide {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-8);
+  overflow-y: auto;
+}
+
+.formInner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding-block: var(--space-6);
+}
+
+.sceneSide {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius-lg) - var(--space-2));
+  background: #6c9674;
+}
+
+@media (max-width: 880px) {
+  .page {
+    padding: 0;
+    place-items: stretch;
+  }
+
+  .card {
+    height: auto;
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sceneSide {
+    order: -1;
+    height: 320px;
+  }
+
+  .formSide {
+    padding: var(--space-4) var(--space-3) var(--space-8);
+  }
+}
