@@ -6,6 +6,7 @@ import { TextField } from '../../../components/ui/TextField';
 import { useAuth } from '../authContext';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordField } from '../components/PasswordField';
+import { SocialLogin } from '../components/SocialLogin';
 import { useAuthForm } from '../hooks/useAuthForm';
 import { AuthError } from '../services/authService';
 import { loginSchema } from '../validation';
@@ -64,6 +65,8 @@ export function LoginPage() {
           Entrar
         </Button>
       </form>
+
+      <SocialLogin />
 
       <p className={styles.switch}>
         ¿Primera vez aquí? <Link to={ROUTES.register}>Crea tu cuenta</Link>
