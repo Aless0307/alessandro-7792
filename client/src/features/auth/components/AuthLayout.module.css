@@ -25,6 +25,8 @@
 .formSide {
   display: flex;
   flex-direction: column;
+  /* "safe": si el contenido no cabe (registro), no se corta por arriba. */
+  justify-content: safe center;
   padding: var(--space-6);
   overflow-y: auto;
 }
@@ -37,24 +39,19 @@
   margin: 0 auto;
 }
 
+/* Encabezado de marca: logo y frase centrados sobre el formulario. */
 .brand {
   display: grid;
-  gap: var(--space-1);
+  justify-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  text-align: center;
 }
 
-/* Alineada con el texto del logo, no con el caparazón. */
 .tagline {
-  padding-left: 34px;
   color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-
-.formInner {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: var(--space-6);
+  font-size: var(--text-lg);
+  font-weight: 500;
 }
 
 .sceneSide {
