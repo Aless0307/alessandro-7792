@@ -28,6 +28,32 @@ Abrir http://localhost:5173
 | `npm run lint`       | Revisa el código con ESLint                               |
 | `npm run build`      | Genera los builds de producción                           |
 
+## Pruebas
+
+```bash
+npm test               # todas las pruebas (frontend y backend)
+npm run test:coverage  # con reporte de cobertura
+npm test -w client     # solo frontend
+npm test -w server     # solo backend
+```
+
+Las pruebas usan **Vitest**; el frontend usa además **Testing Library** (se prueba lo que ve y hace el usuario, no detalles internos) y el backend **Supertest** (peticiones HTTP reales a la app de Express, sin abrir un puerto).
+
+La prioridad fue probar lo que el enunciado exige y lo que sería más grave si fallara:
+
+| Qué se prueba                                                                                                                                             | Dónde                                                 | Por qué                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
+| Registro → panel → cerrar sesión → volver a entrar, y que la sesión sobreviva a una recarga                                                               | `features/auth/authFlow.test.tsx`                     | Es el mínimo para que la entrega sea válida                      |
+| La contraseña nunca se guarda en texto plano; hash con sal distinta cada vez; mismo error para correo inexistente o contraseña incorrecta; sesión vencida | `features/auth/services/*.test.ts`                    | Evalúan explícitamente cómo se trata la contraseña               |
+| Validaciones de registro e inicio de sesión                                                                                                               | `features/auth/validation.test.ts`                    | Reglas de negocio de los formularios                             |
+| Cada escenario de SnailPay: código HTTP, `status`, `status_detail` y todos los campos exigidos                                                            | `server/src/modules/snailpay/snailpay.routes.test.ts` | Es el contrato que evalúan y lo que se documenta para reproducir |
+| El saldo solo sube con un cobro aprobado, nunca dos veces por la misma operación, y se guarda con tarjeta y CVV                                           | `features/topup/services/topUpService.test.ts`        | "No deberán generarse falsos cobros exitosos"                    |
+| Respuestas sospechosas (aprobado con HTTP 500, sin autorización, otro monto u otro usuario) no cuentan como aprobadas                                     | `features/topup/api/snailpayClient.test.ts`           | Defensa ante una integración que responde mal                    |
+| Timeout con `AbortController`, error de red y cuerpos que no son JSON                                                                                     | `lib/api/httpClient.test.ts`                          | Evalúan el manejo de errores y timeout                           |
+| Recarga desde el panel: el saldo se actualiza de inmediato; un rechazo lo deja igual                                                                      | `features/topup/topUpFlow.test.tsx`                   | El flujo completo como lo vive el usuario                        |
+| Las 6 carreras siempre suman 6 victorias y las apuestas ganadas coinciden con los ganadores                                                               | `features/races/*.test.ts`                            | "Los datos simulados deben tener congruencia con las reglas"     |
+| Gráficas: tooltip con teclado, rótulos selectivos y tabla accesible                                                                                       | `components/charts/*.test.*`                          | Accesibilidad de las visualizaciones                             |
+
 ## SnailPay: pasarela de pagos simulada
 
 `POST /api/snailpay/charges` — no se conecta con ningún servicio real; todos los datos son ficticios.

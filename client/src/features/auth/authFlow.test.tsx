@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { ROUTES } from '../../app/routes';
 import { renderApp } from '../../test/renderApp';
+import { register } from './services/authService';
 
 // Flujo mínimo exigido para que la entrega sea válida, probado de punta a punta en la UI.
 describe('flujo de autenticación', () => {
@@ -11,6 +12,24 @@ describe('flujo de autenticación', () => {
 
     expect(router.state.location.pathname).toBe(ROUTES.login);
     expect(screen.getByRole('heading', { name: 'Inicia sesión' })).toBeInTheDocument();
+  });
+
+  it('después de recargar la página sigue dentro, con su nombre y saldo', async () => {
+    await register({
+      fullName: 'Ana López',
+      email: 'ana@correo.com',
+      password: 'caracol123',
+      confirmPassword: 'caracol123',
+    });
+
+    // Montar la app de cero equivale a recargar: solo queda lo guardado en localStorage.
+    const { unmount } = renderApp(ROUTES.dashboard);
+    unmount();
+    const { router } = renderApp(ROUTES.login);
+
+    expect(router.state.location.pathname).toBe(ROUTES.dashboard);
+    expect(screen.getByRole('heading', { name: 'Hola, Ana' })).toBeInTheDocument();
+    expect(screen.getByText('$0.00')).toBeInTheDocument();
   });
 
   it('registro → panel → cerrar sesión → iniciar sesión otra vez', async () => {
