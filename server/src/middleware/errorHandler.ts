@@ -12,5 +12,7 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
 }
 
 function isJsonParseError(err: unknown): boolean {
-  return typeof err === 'object' && err !== null && 'type' in err && err.type === 'entity.parse.failed';
+  return (
+    typeof err === 'object' && err !== null && 'type' in err && err.type === 'entity.parse.failed'
+  );
 }
