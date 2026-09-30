@@ -1,28 +1,44 @@
 .page {
   max-width: 1120px;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-6) var(--space-4) var(--space-12);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-8);
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-6);
+.main {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-1);
 }
 
 .greeting {
   font-size: var(--text-2xl);
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.date {
+  color: var(--color-text-muted);
+}
+
+/* Saldo a lo ancho; debajo, apuestas (más angosta) y victorias (más ancha). */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: var(--space-4);
 }
 
 .balance {
-  color: var(--color-text-muted);
-  font-size: var(--text-lg);
+  grid-column: 1 / -1;
 }
 
-.balance strong {
-  color: var(--color-text);
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }

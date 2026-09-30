@@ -1,0 +1,119 @@
+.figure {
+  margin: 0;
+}
+
+/* Cuadrícula: eje Y a la izquierda, área de columnas y, debajo, los nombres. */
+.plot {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 200px auto;
+  column-gap: var(--space-3);
+}
+
+.axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  /* Centra cada número sobre su línea de guía. */
+  margin-block: -0.6em;
+}
+
+.area {
+  position: relative;
+}
+
+.gridline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--dew-100);
+}
+
+.columns,
+.labels {
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+}
+
+.columns {
+  position: absolute;
+  inset: 0;
+}
+
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  outline-offset: 4px;
+}
+
+.bar {
+  width: min(24px, 60%);
+  height: var(--height);
+  border-radius: 4px 4px 0 0;
+  background: var(--chart-muted);
+  transition: height 400ms ease;
+}
+
+.bar[data-highlighted] {
+  background: var(--chart-won);
+}
+
+.column:hover .bar,
+.column:focus-visible .bar {
+  filter: brightness(0.92);
+}
+
+/* Fuera del flujo: si ocupara espacio en la columna, la barra quedaría más baja que su valor. */
+.capLabel {
+  position: absolute;
+  bottom: calc(var(--height) + var(--space-1));
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(var(--height, 0%) + 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--moss-900);
+  color: var(--dew-50);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.labels {
+  grid-column: 2;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.label {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.labelText {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

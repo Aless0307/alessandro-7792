@@ -24,7 +24,7 @@ describe('flujo de autenticación', () => {
     await user.click(screen.getByRole('button', { name: 'Crear cuenta' }));
 
     expect(
-      await screen.findByRole('heading', { name: 'Hola, Ana López' }, { timeout: 5000 }),
+      await screen.findByRole('heading', { name: 'Hola, Ana' }, { timeout: 5000 }),
     ).toBeInTheDocument();
     expect(screen.getByText('$0.00')).toBeInTheDocument();
 
@@ -36,7 +36,7 @@ describe('flujo de autenticación', () => {
     await user.click(screen.getByRole('button', { name: 'Entrar' }));
 
     expect(
-      await screen.findByRole('heading', { name: 'Hola, Ana López' }, { timeout: 5000 }),
+      await screen.findByRole('heading', { name: 'Hola, Ana' }, { timeout: 5000 }),
     ).toBeInTheDocument();
   });
 

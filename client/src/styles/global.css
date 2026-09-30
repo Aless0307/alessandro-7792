@@ -26,6 +26,11 @@
   --color-danger-bg: #fbecec;
   --color-focus: var(--hydrangea-400);
 
+  /* Gráficas: validados con el script del skill de dataviz (contraste y daltonismo). */
+  --chart-won: #2a8c5c;
+  --chart-lost: #7b7fc8;
+  --chart-muted: #b7c4bb;
+
   --font-display: 'Figtree Variable', system-ui, sans-serif;
   --font-body: 'Figtree Variable', system-ui, sans-serif;
 
@@ -100,4 +105,14 @@ input {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* Oculto a la vista pero disponible para lectores de pantalla (tablas equivalentes de las gráficas). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

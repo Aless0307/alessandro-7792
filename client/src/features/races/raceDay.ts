@@ -52,7 +52,8 @@ export function createSeededRandom(seed: number): () => number {
   };
 }
 
-function hashString(value: string): number {
+// FNV-1a: convierte un texto (fecha, id de usuario) en una semilla numérica estable.
+export function hashString(value: string): number {
   let hash = 2166136261;
   for (let i = 0; i < value.length; i++) {
     hash ^= value.charCodeAt(i);

@@ -1,0 +1,24 @@
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgb(23 48 42 / 0.05);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.description {
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
