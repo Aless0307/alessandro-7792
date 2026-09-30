@@ -1,24 +1,26 @@
-import type { ChargeStatus, ChargeStatusDetail } from '@snail/shared';
+import {
+  SNAILPAY_TEST_CARDS,
+  type ChargeStatusDetail,
+  type TestCard,
+  type TestCardOutcome,
+} from '@snail/shared';
 
-// Tarjetas de prueba de SnailPay: cada una provoca un resultado conocido.
-// Esta tabla es la fuente de la documentación del README.
+// Las tarjetas de prueba vienen del paquete compartido (también las usa el frontend).
 
-export const APPROVED_CARD = {
-  number: '1234123412341234',
-  expirationDate: '12/26',
-  cvv: '543',
-} as const;
+export const APPROVED_CARD: TestCard = SNAILPAY_TEST_CARDS.find(
+  (card) => card.outcome.kind === 'approved',
+)!;
 
-export type ScenarioOutcome =
-  { kind: 'result'; status: ChargeStatus; detail: ChargeStatusDetail } | { kind: 'slow_response' };
-
-export const TEST_CARDS: Record<string, ScenarioOutcome> = {
-  '4000000000000002': { kind: 'result', status: 'rejected', detail: 'card_declined' },
-  '4000000000009995': { kind: 'result', status: 'rejected', detail: 'insufficient_funds' },
-  '4000000000000069': { kind: 'result', status: 'rejected', detail: 'expired_card' },
-  '4000000000000500': { kind: 'result', status: 'error', detail: 'service_unavailable' },
-  '4000000000000408': { kind: 'slow_response' },
-};
+// Resultado fijo por número de tarjeta; la tarjeta aprobada se trata aparte porque
+// además exige que coincidan la fecha y el CVV.
+export const TEST_CARDS: Record<
+  string,
+  Exclude<TestCardOutcome, { kind: 'approved' }>
+> = Object.fromEntries(
+  SNAILPAY_TEST_CARDS.flatMap((card) =>
+    card.outcome.kind === 'approved' ? [] : [[card.number, card.outcome]],
+  ),
+);
 
 // Mensajes para el usuario: dicen qué pasó y qué puede hacer.
 export const MESSAGES: Record<ChargeStatusDetail, string> = {

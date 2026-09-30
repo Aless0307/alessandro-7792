@@ -7,14 +7,14 @@ import { useAuth } from '../authContext';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordField } from '../components/PasswordField';
 import { SocialLogin } from '../components/SocialLogin';
-import { useAuthForm } from '../hooks/useAuthForm';
+import { useZodForm } from '../../../lib/forms/useZodForm';
 import { AuthError } from '../services/authService';
 import { loginSchema } from '../validation';
 import styles from './AuthForm.module.css';
 
 export function LoginPage() {
   const { login } = useAuth();
-  const form = useAuthForm(loginSchema, { email: '', password: '' });
+  const form = useZodForm(loginSchema, { email: '', password: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 

@@ -1,0 +1,59 @@
+.success {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  color: var(--color-success);
+}
+
+.title {
+  margin-top: var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.amount {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.details {
+  width: 100%;
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.details div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: var(--text-label);
+}
+
+.details dt {
+  color: var(--color-text-muted);
+}
+
+.details dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.done {
+  width: 100%;
+}

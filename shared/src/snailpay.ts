@@ -52,40 +52,45 @@ export const chargeRequestSchema = z.object({
 export type ChargeRequest = z.input<typeof chargeRequestSchema>;
 export type ValidChargeRequest = z.output<typeof chargeRequestSchema>;
 
-export type ChargeStatus = 'approved' | 'rejected' | 'error';
+export const chargeStatusSchema = z.enum(['approved', 'rejected', 'error']);
 
-export type ChargeStatusDetail =
-  | 'accredited'
-  | 'invalid_data'
-  | 'invalid_card_data'
-  | 'card_declined'
-  | 'insufficient_funds'
-  | 'expired_card'
-  | 'amount_limit_exceeded'
-  | 'unknown_card'
-  | 'service_unavailable'
-  | 'gateway_timeout';
+export const chargeStatusDetailSchema = z.enum([
+  'accredited',
+  'invalid_data',
+  'invalid_card_data',
+  'card_declined',
+  'insufficient_funds',
+  'expired_card',
+  'amount_limit_exceeded',
+  'unknown_card',
+  'service_unavailable',
+  'gateway_timeout',
+]);
 
-export interface FieldError {
-  field: string;
-  message: string;
-}
+export const fieldErrorSchema = z.object({ field: z.string(), message: z.string() });
 
-export interface ChargeResponse {
-  id: string;
-  status: ChargeStatus;
-  status_detail: ChargeStatusDetail;
+// Forma de toda respuesta de SnailPay. El frontend la valida al recibirla:
+// no se confía en una respuesta que no cumpla el contrato.
+export const chargeResponseSchema = z.object({
+  id: z.string(),
+  status: chargeStatusSchema,
+  status_detail: chargeStatusDetailSchema,
   // Texto listo para mostrar al usuario.
-  message: string;
-  transaction_amount: number | null;
-  date_created: string;
-  authorization_code: string | null;
-  reference: string;
-  payer_id: string | null;
-  payer_email: string | null;
+  message: z.string(),
+  transaction_amount: z.number().nullable(),
+  date_created: z.string(),
+  authorization_code: z.string().nullable(),
+  reference: z.string(),
+  payer_id: z.string().nullable(),
+  payer_email: z.string().nullable(),
   // El enunciado pide devolverlos; siempre son datos ficticios de prueba.
-  card_number: string | null;
-  cvv: string | null;
+  card_number: z.string().nullable(),
+  cvv: z.string().nullable(),
   // Solo cuando status_detail es 'invalid_data'.
-  errors?: FieldError[];
-}
+  errors: z.array(fieldErrorSchema).optional(),
+});
+
+export type ChargeStatus = z.infer<typeof chargeStatusSchema>;
+export type ChargeStatusDetail = z.infer<typeof chargeStatusDetailSchema>;
+export type FieldError = z.infer<typeof fieldErrorSchema>;
+export type ChargeResponse = z.infer<typeof chargeResponseSchema>;

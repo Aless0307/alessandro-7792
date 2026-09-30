@@ -62,6 +62,21 @@ export function getCurrentUser(): User | null {
   return user ? toPublicUser(user) : null;
 }
 
+// Suma un monto al saldo del usuario y lo guarda. Se redondea a centavos para evitar
+// arrastrar errores de punto flotante (0.1 + 0.2).
+export function creditBalance(userId: string, amount: number): User {
+  const users = getStoredUsers();
+  const user = users.find((candidate) => candidate.id === userId);
+  if (!user) throw new Error('No se encontró al usuario para actualizar su saldo.');
+
+  const updated: StoredUser = { ...user, balance: Math.round((user.balance + amount) * 100) / 100 };
+  writeJson(
+    STORAGE_KEYS.users,
+    users.map((candidate) => (candidate.id === userId ? updated : candidate)),
+  );
+  return toPublicUser(updated);
+}
+
 function startSession(userId: string): void {
   const now = Date.now();
   const session: Session = {

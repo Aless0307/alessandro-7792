@@ -1,10 +1,15 @@
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import type { z } from 'zod';
-import { toFieldErrors, type FieldErrors } from '../validation';
+import { toFieldErrors, type FieldErrors } from './fieldErrors';
 
-// Estado y validación de los formularios de acceso. Los errores de un campo se muestran
-// hasta que el usuario sale de él (blur) o intenta enviar, para no regañar mientras escribe.
-export function useAuthForm<TValues extends Record<string, string>, TOutput>(
+interface FieldOptions {
+  // Da formato mientras se escribe (por ejemplo, agrupar los dígitos de la tarjeta).
+  format?: (value: string) => string;
+}
+
+// Estado y validación de un formulario con un esquema de Zod. Los errores de un campo se
+// muestran hasta que el usuario sale de él (blur) o intenta enviar, para no regañar mientras escribe.
+export function useZodForm<TValues extends Record<string, string>, TOutput>(
   schema: z.ZodType<TOutput, TValues>,
   initialValues: TValues,
 ) {
@@ -25,13 +30,18 @@ export function useAuthForm<TValues extends Record<string, string>, TOutput>(
     if (touched[field] || wasSubmitted) errors[field] = allErrors[field];
   }
 
-  function fieldProps(field: keyof TValues) {
+  function fieldProps(field: keyof TValues, options: FieldOptions = {}) {
     return {
       name: String(field),
       value: values[field],
       error: errors[field],
-      onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setValues((current) => ({ ...current, [field]: event.target.value })),
+      onChange: (event: ChangeEvent<HTMLInputElement>) => {
+        const raw = event.target.value;
+        setValues((current) => ({
+          ...current,
+          [field]: options.format ? options.format(raw) : raw,
+        }));
+      },
       onBlur: () => setTouched((current) => ({ ...current, [field]: true })),
     };
   }
@@ -44,11 +54,17 @@ export function useAuthForm<TValues extends Record<string, string>, TOutput>(
     };
   }
 
+  // Reemplaza varios valores a la vez (por ejemplo, al elegir una tarjeta de prueba).
+  function setFieldValues(next: Partial<TValues>) {
+    setValues((current) => ({ ...current, ...next }));
+  }
+
   return {
     values,
     fieldProps,
     handleSubmit,
-    // Fracción de campos completos y válidos: mueve al caracol en la pista.
+    setFieldValues,
+    // Fracción de campos completos y válidos (en el acceso, mueve al caracol en la pista).
     progress: validFields.length / fields.length,
   };
 }

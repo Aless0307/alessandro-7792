@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useAuth } from '../auth/authContext';
 import { simulateBets } from '../races/bets';
 import { simulateRaceDay } from '../races/raceDay';
+import { TopUpDialog } from '../topup/components/TopUpDialog';
 import { BalanceCard } from './components/BalanceCard';
 import { BetsCard } from './components/BetsCard';
 import { DashboardHeader } from './components/DashboardHeader';
@@ -15,7 +16,8 @@ const dateFormatter = new Intl.DateTimeFormat('es-MX', {
 });
 
 export function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, refreshUser } = useAuth();
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const today = useMemo(() => new Date(), []);
   const day = useMemo(() => simulateRaceDay(today), [today]);
   const bets = useMemo(() => (user ? simulateBets(user.id, day) : null), [user, day]);
@@ -35,12 +37,20 @@ export function DashboardPage() {
 
         <div className={styles.grid}>
           <div className={styles.balance}>
-            <BalanceCard balance={user.balance} />
+            <BalanceCard balance={user.balance} onTopUp={() => setIsTopUpOpen(true)} />
           </div>
           <BetsCard summary={bets} />
           <WinsCard day={day} />
         </div>
       </main>
+
+      {isTopUpOpen && (
+        <TopUpDialog
+          user={user}
+          onClose={() => setIsTopUpOpen(false)}
+          onBalanceChange={refreshUser}
+        />
+      )}
     </div>
   );
 }

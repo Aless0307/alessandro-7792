@@ -5,6 +5,7 @@ const PREFIX = 'snailbet:';
 export const STORAGE_KEYS = {
   users: 'users',
   session: 'session',
+  charges: 'charges',
 } as const;
 
 type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

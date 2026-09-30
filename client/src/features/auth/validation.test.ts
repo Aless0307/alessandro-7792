@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { loginSchema, registerSchema, toFieldErrors } from './validation';
+import { toFieldErrors } from '../../lib/forms/fieldErrors';
+import { loginSchema, registerSchema } from './validation';
 
 const validRegistration = {
   fullName: 'Ana López',

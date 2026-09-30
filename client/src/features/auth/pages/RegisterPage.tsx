@@ -7,14 +7,14 @@ import { useAuth } from '../authContext';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordChecklist } from '../components/PasswordChecklist';
 import { PasswordField } from '../components/PasswordField';
-import { useAuthForm } from '../hooks/useAuthForm';
+import { useZodForm } from '../../../lib/forms/useZodForm';
 import { AuthError } from '../services/authService';
 import { registerSchema } from '../validation';
 import styles from './AuthForm.module.css';
 
 export function RegisterPage() {
   const { register } = useAuth();
-  const form = useAuthForm(registerSchema, {
+  const form = useZodForm(registerSchema, {
     fullName: '',
     email: '',
     password: '',
