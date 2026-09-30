@@ -11,8 +11,10 @@ import { useZodForm } from '../../../lib/forms/useZodForm';
 import { AuthError } from '../services/authService';
 import { registerSchema } from '../validation';
 import styles from './AuthForm.module.css';
+import { useDocumentTitle } from '../../../lib/hooks/useDocumentTitle';
 
 export function RegisterPage() {
+  useDocumentTitle('Crea tu cuenta');
   const { register } = useAuth();
   const form = useZodForm(registerSchema, {
     fullName: '',

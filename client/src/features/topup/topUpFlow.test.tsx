@@ -24,7 +24,8 @@ function stubSnailPay(overrides: Parameters<typeof chargeResponse>[0], status: n
 
 async function openTopUpAndPay(cardLabel: string, amount: string) {
   const user = userEvent.setup();
-  await user.click(await screen.findByRole('button', { name: 'Recargar saldo' }));
+  // El primero es el de la tarjeta de saldo; el historial vacío tiene otro igual.
+  await user.click((await screen.findAllByRole('button', { name: 'Recargar saldo' }))[0]!);
   const dialog = screen.getByRole('dialog', { name: 'Recargar saldo' });
 
   await user.click(within(dialog).getByText('Tarjetas de prueba'));
@@ -85,7 +86,8 @@ describe('recarga de saldo desde el panel', () => {
     const user = userEvent.setup();
     renderApp(ROUTES.dashboard);
 
-    await user.click(await screen.findByRole('button', { name: 'Recargar saldo' }));
+    // El primero es el de la tarjeta de saldo; el historial vacío tiene otro igual.
+    await user.click((await screen.findAllByRole('button', { name: 'Recargar saldo' }))[0]!);
     const dialog = screen.getByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Pagar' }));
 
