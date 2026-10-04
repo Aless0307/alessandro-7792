@@ -46,6 +46,17 @@
   font-weight: 600;
 }
 
+.notice,
+.result {
+  /* deja visible el título del modal */
+  scroll-margin-top: 96px;
+}
+
+.notice:focus,
+.result:focus {
+  outline: none;
+}
+
 .notice {
   display: grid;
   gap: var(--space-1);

@@ -26,7 +26,6 @@
   color: var(--color-text-muted);
 }
 
-/* Saldo a lo ancho; debajo, apuestas (más angosta) y victorias (más ancha); al final, recargas. */
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);

@@ -10,9 +10,9 @@ import {
 import { APPROVED_CARD, MESSAGES, TEST_CARDS } from './snailpay.scenarios';
 
 export interface SnailPayConfig {
-  // Simula que SnailPay está caído: toda petición termina en error del sistema.
+  // todo responde 503
   forceOutage: boolean;
-  // Cuánto tarda en responder la tarjeta de "respuesta lenta".
+  // demora de la tarjeta lenta
   slowResponseMs: number;
 }
 
@@ -34,8 +34,7 @@ const HTTP_STATUS: Record<ChargeStatusDetail, number> = {
   gateway_timeout: 504,
 };
 
-// Decide el resultado de un cobro. El orden importa:
-// 1) caída forzada, 2) formato de los datos, 3) límite de monto, 4) tarjetas de prueba.
+// El orden importa: caída forzada → formato → límite de monto → tarjetas de prueba.
 export async function processCharge(input: unknown, config: SnailPayConfig): Promise<ChargeResult> {
   if (config.forceOutage) {
     return respond('error', 'service_unavailable', echoRawInput(input));
@@ -102,7 +101,7 @@ function respond(
     message: MESSAGES[detail],
     ...echo,
     date_created: now.toISOString(),
-    // Solo un cobro aprobado tiene código de autorización.
+    // solo los aprobados llevan autorización
     authorization_code: status === 'approved' ? String(randomInt(100000, 1000000)) : null,
     reference: buildReference(now),
     ...(errors && { errors }),
@@ -110,15 +109,14 @@ function respond(
   return { httpStatus: HTTP_STATUS[detail], body };
 }
 
-// Referencia legible para soporte: SNP-AAAAMMDD-XXXXXX.
+// SNP-AAAAMMDD-XXXXXX
 function buildReference(date: Date): string {
   const day = date.toISOString().slice(0, 10).replaceAll('-', '');
   const suffix = randomUUID().replaceAll('-', '').slice(0, 6).toUpperCase();
   return `SNP-${day}-${suffix}`;
 }
 
-// Cuando los datos no son válidos se devuelve lo que llegó, pero solo si es texto o número
-// y recortado, para no reflejar cuerpos arbitrarios.
+// Con datos inválidos se devuelve lo que llegó, pero solo strings/números y recortados.
 function echoRawInput(input: unknown): Echo {
   const raw = (typeof input === 'object' && input !== null ? input : {}) as Record<string, unknown>;
   const text = (value: unknown) => (typeof value === 'string' ? value.slice(0, 64) : null);

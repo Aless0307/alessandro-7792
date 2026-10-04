@@ -5,7 +5,7 @@ import styles from './Modal.module.css';
 interface ModalProps {
   title: string;
   onClose: () => void;
-  // Falso mientras hay una operación en curso: no se puede cerrar a medias.
+  // false mientras se procesa un pago
   canClose?: boolean;
   children: ReactNode;
 }
@@ -85,7 +85,6 @@ export function Modal({ title, onClose, canClose = true, children }: ModalProps)
   );
 }
 
-// Mantiene el foco dentro del modal al usar Tab y Shift+Tab.
 function trapFocus(event: KeyboardEvent, container: HTMLElement) {
   const focusable = [...container.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
     (element) => !element.hasAttribute('disabled'),

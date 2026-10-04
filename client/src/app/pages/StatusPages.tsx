@@ -21,7 +21,6 @@ export function NotFoundPage() {
 export function ErrorPage() {
   useDocumentTitle('Algo salió mal');
   const error = useRouteError();
-  // Se deja rastro en consola para depurar; al usuario solo se le muestra qué hacer.
   console.error(error);
 
   return (

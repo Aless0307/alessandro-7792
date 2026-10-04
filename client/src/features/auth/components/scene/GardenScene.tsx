@@ -15,10 +15,8 @@ import {
 } from './trackGeometry';
 import styles from './GardenScene.module.css';
 
-// Jardín al amanecer después de la lluvia. La pista se pierde en el horizonte y el caracol
-// del usuario avanza (y se aleja) según `progress`, rebasando a los rivales.
+// El caracol del usuario avanza hacia el horizonte según `progress` y va rebasando a los demás.
 const PLAYER_LANE = 3;
-// Los rivales son los caracoles del día, repartidos por la pista con sus colores.
 const RIVAL_POSITIONS = [
   { lane: 0, t: 0.36 },
   { lane: 1, t: 0.52 },
@@ -106,7 +104,7 @@ export function GardenScene({ progress }: GardenSceneProps) {
   );
 }
 
-// Pin sobre el caracol del usuario. No se encoge tanto como el caracol para seguir visible a lo lejos.
+// el pin no se encoge tanto para que se vea de lejos
 function PlayerMarker({ t }: { t: number }) {
   const position = pointOnTrack(t, PLAYER_LANE + 0.5);
   const snailScale = scaleAt(t) * SNAIL_SIZE;
@@ -134,7 +132,6 @@ function Hills() {
         d="M0 330 C80 306 150 318 230 334 S400 300 470 318 S560 330 600 322 L600 360 L0 360 Z"
         fill="#8aa893"
       />
-      {/* Seto sobre el horizonte */}
       <path
         d="M0 356 q15 -16 30 -4 q12 -14 28 -2 q14 -16 30 -3 q14 -12 28 0 q16 -15 32 -2 q12 -13 26 -1 q15 -16 30 -3 q14 -12 28 0 q16 -15 32 -2 q12 -13 26 -1 q15 -16 30 -3 q14 -12 28 0 q16 -15 32 -2 q12 -13 26 -1 q15 -16 30 -3 q14 -12 28 0 q16 -15 32 -2 q12 -13 26 -1 q15 -16 30 -3 q14 -12 28 0 q10 -8 20 0 L600 364 L0 364 Z"
         fill="#5f8a6b"
@@ -143,7 +140,6 @@ function Hills() {
   );
 }
 
-// Banda a cuadros sobre la pista, con dos postes y un banderín.
 function FinishLine() {
   const cells = 12;
   const depthStep = 0.018;
@@ -194,7 +190,6 @@ function FinishLine() {
   );
 }
 
-// Hojas en primer plano con gotas de rocío: enmarcan la escena y dan profundidad.
 const LEAF = 'M0 0 C30 -40 112 -56 176 -18 C122 10 52 22 0 0 Z';
 const VEIN = 'M6 -2 C62 -18 116 -24 170 -18';
 

@@ -36,7 +36,7 @@ describe('topUp', () => {
     expect(getCurrentUser()?.balance).toBe(250);
   });
 
-  it('guarda la operación con número de tarjeta y CVV, como pide el enunciado', async () => {
+  it('guarda la operación con número de tarjeta y CVV', async () => {
     stubFetchResponse(chargeResponse({ payer_id: user.id }), 201);
 
     await topUp(user, form);

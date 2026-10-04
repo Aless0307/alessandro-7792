@@ -1,6 +1,4 @@
-// La contraseña nunca se guarda: se guarda un hash PBKDF2-SHA256 con sal aleatoria por usuario.
-// La sal evita que dos usuarios con la misma contraseña tengan el mismo hash, y las
-// iteraciones hacen costoso probar contraseñas por fuerza bruta (valor recomendado por OWASP).
+// PBKDF2-SHA256 con sal aleatoria por usuario. 600k iteraciones es lo que recomienda OWASP.
 export const PBKDF2_ITERATIONS = 600_000;
 const SALT_BYTES = 16;
 const HASH_BITS = 256;
@@ -45,7 +43,7 @@ async function deriveKey(
   return new Uint8Array(bits);
 }
 
-// Compara todos los bytes siempre, para no revelar por tiempo de respuesta cuántos coinciden.
+// tiempo constante: no se corta en el primer byte distinto
 function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;

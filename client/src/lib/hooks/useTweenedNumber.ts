@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Interpola suavemente hacia `target` en `durationMs`. Si el usuario pidió reducir
-// el movimiento, salta directo al valor final.
+// Anima un número hacia `target`. Con prefers-reduced-motion salta directo.
 export function useTweenedNumber(target: number, durationMs: number): number {
   const [value, setValue] = useState(target);
   const valueRef = useRef(target);

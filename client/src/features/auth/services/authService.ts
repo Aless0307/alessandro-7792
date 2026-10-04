@@ -3,7 +3,7 @@ import type { Session, StoredUser, User } from '../types';
 import type { LoginInput, RegisterInput } from '../validation';
 import { hashPassword, verifyPassword } from './passwordHasher';
 
-// Simulación local del backend de autenticación: toda la persistencia vive en localStorage.
+// Auth simulada: todo vive en localStorage.
 export const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 
 export class AuthError extends Error {
@@ -37,7 +37,7 @@ export async function register(input: RegisterInput): Promise<User> {
 
 export async function login(input: LoginInput): Promise<User> {
   const user = getStoredUsers().find((candidate) => candidate.email === input.email);
-  // Mismo mensaje si el correo no existe o si la contraseña falla: no se revela qué cuentas existen.
+  // mismo mensaje en los dos casos para no revelar qué correos existen
   if (!user || !(await verifyPassword(input.password, user.password))) {
     throw new AuthError('INVALID_CREDENTIALS', 'El correo o la contraseña no son correctos.');
   }
@@ -62,8 +62,7 @@ export function getCurrentUser(): User | null {
   return user ? toPublicUser(user) : null;
 }
 
-// Suma un monto al saldo del usuario y lo guarda. Se redondea a centavos para evitar
-// arrastrar errores de punto flotante (0.1 + 0.2).
+// redondeo a centavos porque 0.1 + 0.2 !== 0.3
 export function creditBalance(userId: string, amount: number): User {
   const users = getStoredUsers();
   const user = users.find((candidate) => candidate.id === userId);

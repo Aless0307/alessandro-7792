@@ -7,7 +7,7 @@ export interface AuthContextValue {
   register: (input: RegisterInput) => Promise<void>;
   login: (input: LoginInput) => Promise<void>;
   logout: () => void;
-  // Vuelve a leer al usuario guardado (por ejemplo, después de recargar saldo).
+  // relee el usuario de localStorage, p. ej. después de una recarga de saldo
   refreshUser: () => void;
 }
 

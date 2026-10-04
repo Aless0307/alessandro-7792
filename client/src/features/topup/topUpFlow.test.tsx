@@ -77,6 +77,8 @@ describe('recarga de saldo desde el panel', () => {
     expect(alert).toHaveTextContent('Pago rechazado');
     expect(alert).toHaveTextContent('Tu banco rechazó el pago');
     expect(alert).toHaveTextContent('Tu saldo no cambió.');
+    // aunque el usuario esté desplazado hasta abajo, el aviso recibe el foco
+    expect(alert).toHaveFocus();
     expect(screen.getAllByText('$0.00').length).toBeGreaterThan(0);
   });
 

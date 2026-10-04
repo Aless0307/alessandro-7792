@@ -33,7 +33,6 @@ export function WinsCard({ day }: WinsCardProps) {
   );
 }
 
-// El dato que importa de la gráfica, dicho en una línea.
 function describeLeaders(leaderIds: string[], wins: number): string {
   const names = leaderIds.map((id) => getSnail(id).name);
   const victories = wins === 1 ? '1 victoria' : `${wins} victorias`;

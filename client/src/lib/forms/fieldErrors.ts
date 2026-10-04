@@ -2,7 +2,7 @@ import type { z } from 'zod';
 
 export type FieldErrors<T> = Partial<Record<keyof T, string>>;
 
-// Convierte el resultado de Zod en { campo: primer mensaje } para mostrarlo bajo cada input.
+// { campo: primer error } para pintarlo debajo de cada input
 export function toFieldErrors<T>(error: z.ZodError): FieldErrors<T> {
   const errors: FieldErrors<T> = {};
   for (const issue of error.issues) {

@@ -30,7 +30,7 @@ export function RegisterPage() {
     setFormError(null);
     try {
       await register(data);
-      // Al tener sesión, la ruta redirige sola al panel.
+      // con sesión iniciada, RequireGuest manda al panel
     } catch (error) {
       setFormError(
         error instanceof AuthError

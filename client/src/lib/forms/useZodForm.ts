@@ -3,12 +3,11 @@ import type { z } from 'zod';
 import { toFieldErrors, type FieldErrors } from './fieldErrors';
 
 interface FieldOptions {
-  // Da formato mientras se escribe (por ejemplo, agrupar los dígitos de la tarjeta).
+  // p. ej. agrupar los dígitos de la tarjeta
   format?: (value: string) => string;
 }
 
-// Estado y validación de un formulario con un esquema de Zod. Los errores de un campo se
-// muestran hasta que el usuario sale de él (blur) o intenta enviar, para no regañar mientras escribe.
+// Los errores aparecen al salir del campo o al enviar, no mientras se escribe.
 export function useZodForm<TValues extends Record<string, string>, TOutput>(
   schema: z.ZodType<TOutput, TValues>,
   initialValues: TValues,
@@ -54,7 +53,6 @@ export function useZodForm<TValues extends Record<string, string>, TOutput>(
     };
   }
 
-  // Reemplaza varios valores a la vez (por ejemplo, al elegir una tarjeta de prueba).
   function setFieldValues(next: Partial<TValues>) {
     setValues((current) => ({ ...current, ...next }));
   }
@@ -64,7 +62,7 @@ export function useZodForm<TValues extends Record<string, string>, TOutput>(
     fieldProps,
     handleSubmit,
     setFieldValues,
-    // Fracción de campos completos y válidos (en el acceso, mueve al caracol en la pista).
+    // de 0 a 1, la usa la pista del login
     progress: validFields.length / fields.length,
   };
 }

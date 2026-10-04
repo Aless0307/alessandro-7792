@@ -1,4 +1,3 @@
-// Caparazón en espiral: el mismo trazo que los caracoles de la pista.
 interface ShellIconProps {
   color: string;
   size?: number;

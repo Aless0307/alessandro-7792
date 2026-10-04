@@ -17,6 +17,13 @@ npm run dev        # backend en :3001 y frontend en :5173
 
 Abrir http://localhost:5173
 
+Modo producción en local (un solo servidor sirve la API y el frontend compilado):
+
+```bash
+npm run build
+NODE_ENV=production npm start   # http://localhost:3001
+```
+
 ## Scripts
 
 | Comando              | Qué hace                                                  |
@@ -39,20 +46,20 @@ npm test -w server     # solo backend
 
 Las pruebas usan **Vitest**; el frontend usa además **Testing Library** (se prueba lo que ve y hace el usuario, no detalles internos) y el backend **Supertest** (peticiones HTTP reales a la app de Express, sin abrir un puerto).
 
-La prioridad fue probar lo que el enunciado exige y lo que sería más grave si fallara:
+Lo que más me importaba cubrir es lo que más dolería si fallara: la contraseña, el saldo y la integración con SnailPay.
 
-| Qué se prueba                                                                                                                                             | Dónde                                                 | Por qué                                                          |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
-| Registro → panel → cerrar sesión → volver a entrar, y que la sesión sobreviva a una recarga                                                               | `features/auth/authFlow.test.tsx`                     | Es el mínimo para que la entrega sea válida                      |
-| La contraseña nunca se guarda en texto plano; hash con sal distinta cada vez; mismo error para correo inexistente o contraseña incorrecta; sesión vencida | `features/auth/services/*.test.ts`                    | Evalúan explícitamente cómo se trata la contraseña               |
-| Validaciones de registro e inicio de sesión                                                                                                               | `features/auth/validation.test.ts`                    | Reglas de negocio de los formularios                             |
-| Cada escenario de SnailPay: código HTTP, `status`, `status_detail` y todos los campos exigidos                                                            | `server/src/modules/snailpay/snailpay.routes.test.ts` | Es el contrato que evalúan y lo que se documenta para reproducir |
-| El saldo solo sube con un cobro aprobado, nunca dos veces por la misma operación, y se guarda con tarjeta y CVV                                           | `features/topup/services/topUpService.test.ts`        | "No deberán generarse falsos cobros exitosos"                    |
-| Respuestas sospechosas (aprobado con HTTP 500, sin autorización, otro monto u otro usuario) no cuentan como aprobadas                                     | `features/topup/api/snailpayClient.test.ts`           | Defensa ante una integración que responde mal                    |
-| Timeout con `AbortController`, error de red y cuerpos que no son JSON                                                                                     | `lib/api/httpClient.test.ts`                          | Evalúan el manejo de errores y timeout                           |
-| Recarga desde el panel: el saldo se actualiza de inmediato; un rechazo lo deja igual                                                                      | `features/topup/topUpFlow.test.tsx`                   | El flujo completo como lo vive el usuario                        |
-| Las 6 carreras siempre suman 6 victorias y las apuestas ganadas coinciden con los ganadores                                                               | `features/races/*.test.ts`                            | "Los datos simulados deben tener congruencia con las reglas"     |
-| Gráficas: tooltip con teclado, rótulos selectivos y tabla accesible                                                                                       | `components/charts/*.test.*`                          | Accesibilidad de las visualizaciones                             |
+| Qué se prueba                                                                                                                                 | Dónde                                                 |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Registro, cerrar sesión, volver a entrar y que la sesión sobreviva a un F5                                                                    | `features/auth/authFlow.test.tsx`                     |
+| La contraseña nunca queda en texto plano, la sal cambia cada vez, mismo error para correo inexistente o contraseña incorrecta, sesión vencida | `features/auth/services/*.test.ts`                    |
+| Validaciones de registro e inicio de sesión                                                                                                   | `features/auth/validation.test.ts`                    |
+| Cada escenario de SnailPay: código HTTP, `status`, `status_detail` y campos de la respuesta                                                   | `server/src/modules/snailpay/snailpay.routes.test.ts` |
+| El saldo solo sube con un cobro aprobado y nunca dos veces por la misma operación                                                             | `features/topup/services/topUpService.test.ts`        |
+| Respuestas raras (aprobado con HTTP 500, sin autorización, otro monto u otro usuario) no cuentan como aprobadas                               | `features/topup/api/snailpayClient.test.ts`           |
+| Timeout con `AbortController`, error de red y respuestas que no son JSON                                                                      | `lib/api/httpClient.test.ts`                          |
+| Recarga desde el panel: el saldo cambia al instante y un rechazo lo deja igual                                                                | `features/topup/topUpFlow.test.tsx`                   |
+| Las 6 carreras suman 6 victorias y las apuestas ganadas coinciden con los ganadores                                                           | `features/races/*.test.ts`                            |
+| Gráficas: tooltip con teclado y tabla para lectores de pantalla                                                                               | `components/charts/*.test.*`                          |
 
 ## SnailPay: pasarela de pagos simulada
 
@@ -76,20 +83,20 @@ La prioridad fue probar lo que el enunciado exige y lo que sería más grave si 
 
 Todas las respuestas (aprobadas, rechazadas y de error) tienen la misma forma:
 
-| Campo                | Formato                             | Descripción                                          |
-| -------------------- | ----------------------------------- | ---------------------------------------------------- |
-| `id`                 | `pay_<uuid>`                        | Identificador de la operación                        |
-| `status`             | `approved` \| `rejected` \| `error` | Estado general                                       |
-| `status_detail`      | ver tabla de escenarios             | Motivo exacto del resultado                          |
-| `message`            | texto                               | Mensaje listo para mostrar al usuario                |
-| `transaction_amount` | número o `null`                     | Monto solicitado                                     |
-| `date_created`       | ISO 8601                            | Fecha de creación                                    |
-| `authorization_code` | 6 dígitos o `null`                  | Solo en cobros aprobados                             |
-| `reference`          | `SNP-AAAAMMDD-XXXXXX`               | Referencia de la operación                           |
-| `payer_id`           | texto                               | Identificador del usuario                            |
-| `payer_email`        | texto                               | Correo del usuario                                   |
-| `card_number`, `cvv` | texto                               | Se devuelven porque lo pide el enunciado (ficticios) |
-| `errors`             | `[{ field, message }]`              | Solo con `invalid_data`                              |
+| Campo                | Formato                             | Descripción                                   |
+| -------------------- | ----------------------------------- | --------------------------------------------- |
+| `id`                 | `pay_<uuid>`                        | Identificador de la operación                 |
+| `status`             | `approved` \| `rejected` \| `error` | Estado general                                |
+| `status_detail`      | ver tabla de escenarios             | Motivo exacto del resultado                   |
+| `message`            | texto                               | Mensaje listo para mostrar al usuario         |
+| `transaction_amount` | número o `null`                     | Monto solicitado                              |
+| `date_created`       | ISO 8601                            | Fecha de creación                             |
+| `authorization_code` | 6 dígitos o `null`                  | Solo en cobros aprobados                      |
+| `reference`          | `SNP-AAAAMMDD-XXXXXX`               | Referencia de la operación                    |
+| `payer_id`           | texto                               | Identificador del usuario                     |
+| `payer_email`        | texto                               | Correo del usuario                            |
+| `card_number`, `cvv` | texto                               | Se devuelven a propósito; son datos de prueba |
+| `errors`             | `[{ field, message }]`              | Solo con `invalid_data`                       |
 
 ### Cómo reproducir cada escenario
 
@@ -110,6 +117,17 @@ Salvo que se indique otra cosa, usar fecha `12/26`, CVV `543`, cualquier nombre 
 | Respuesta lenta      | Tarjeta `4000000000000408` (tarda 15 s)                   | 504  | `error`    | `gateway_timeout`       |
 
 Con la respuesta lenta, el frontend corta la espera a los 8 segundos y muestra un error de tiempo agotado. En ningún escenario distinto al cobro exitoso se modifica el saldo.
+
+## Despliegue
+
+La app se publica en **Render** como un solo servicio web: Express responde la API en `/api/*` y entrega el frontend compilado para cualquier otra ruta, así que frontend y backend comparten URL y no hace falta configurar CORS. La configuración está en [`render.yaml`](render.yaml):
+
+- **Build:** `npm ci --include=dev && npm run build`
+- **Inicio:** `npm start`
+- **Verificación de salud:** `GET /api/health`
+- **Variables:** `NODE_ENV=production`, `NODE_VERSION=24`. Opcional: `SNAILPAY_FORCE_OUTAGE=true` para simular la caída de SnailPay.
+
+En el plan gratuito el servicio se suspende tras unos minutos sin uso; la primera visita después de eso tarda alrededor de 30 segundos en responder. Los datos de cada visitante viven en su propio navegador (localStorage), por lo que no se comparten entre dispositivos.
 
 ## Estructura
 

@@ -2,7 +2,6 @@
   margin: 0;
 }
 
-/* Cuadrícula: eje Y a la izquierda, área de columnas y, debajo, los nombres. */
 .plot {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -18,7 +17,7 @@
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
   text-align: right;
-  /* Centra cada número sobre su línea de guía. */
+  /* centra cada número sobre su línea */
   margin-block: -0.6em;
 }
 
@@ -72,7 +71,7 @@
   filter: brightness(0.92);
 }
 
-/* Fuera del flujo: si ocupara espacio en la columna, la barra quedaría más baja que su valor. */
+/* absoluto: si ocupara espacio, la barra quedaría más baja que su valor */
 .capLabel {
   position: absolute;
   bottom: calc(var(--height) + var(--space-1));

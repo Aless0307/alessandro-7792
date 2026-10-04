@@ -1,5 +1,4 @@
-// Los seis caracoles que corren cada día. El color de caparazón se usa en la pista,
-// en las gráficas y en cualquier lugar donde aparezca el caracol.
+// El color del caparazón se reutiliza en la pista y en las gráficas.
 export interface Snail {
   id: string;
   name: string;

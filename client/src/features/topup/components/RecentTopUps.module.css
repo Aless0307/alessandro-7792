@@ -40,7 +40,7 @@
   color: var(--color-text-muted);
 }
 
-/* Estado con ícono y texto: el color nunca es la única señal. */
+/* ícono + texto, no solo color */
 .status {
   display: inline-flex;
   align-items: center;

@@ -7,7 +7,6 @@ interface TestCardPickerProps {
   disabled?: boolean;
 }
 
-// SnailPay es simulado: estas tarjetas ficticias permiten reproducir cada respuesta.
 export function TestCardPicker({ onPick, disabled }: TestCardPickerProps) {
   return (
     <details className={styles.picker}>

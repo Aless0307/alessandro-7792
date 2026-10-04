@@ -1,4 +1,4 @@
-// Caracol en SVG, mirando a la derecha. El origen (0,0) es la base del cuerpo, al centro.
+// Mirando a la derecha; (0,0) es la base del cuerpo.
 interface SnailProps {
   shellColor: string;
   bodyColor?: string;

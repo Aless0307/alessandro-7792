@@ -3,12 +3,12 @@ import { Logo } from '../../../components/brand/Logo';
 import { GardenScene } from './scene/GardenScene';
 import styles from './AuthLayout.module.css';
 
-// Mientras se verifica, el caracol llega a la meta; los campos solo lo llevan hasta aquí.
+// los campos llevan al caracol hasta el 80 %, el resto lo avanza al enviar
 const FIELDS_SHARE = 0.8;
 
 interface AuthLayoutProps {
   isSubmitting: boolean;
-  // Fracción de campos válidos del formulario (0 a 1).
+  // 0 a 1
   fieldsProgress: number;
   children: ReactNode;
 }

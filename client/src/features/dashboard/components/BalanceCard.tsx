@@ -8,7 +8,6 @@ interface BalanceCardProps {
   onTopUp: () => void;
 }
 
-// La cifra principal del panel: una sola por vista, grande y en la misma familia tipográfica.
 export function BalanceCard({ balance, onTopUp }: BalanceCardProps) {
   return (
     <Card className={styles.card}>

@@ -25,8 +25,7 @@ export function DashboardPage() {
   const today = useMemo(() => new Date(), []);
   const day = useMemo(() => simulateRaceDay(today), [today]);
   const bets = useMemo(() => (user ? simulateBets(user.id, day) : null), [user, day]);
-  // Se vuelve a leer al cerrar el diálogo: una recarga rechazada no cambia al usuario,
-  // pero sí agrega una operación al historial.
+  // se relee al cerrar el modal: un rechazo no cambia al usuario pero sí agrega una operación
   const charges = useMemo(
     () => (user && !isTopUpOpen ? getChargesFor(user.id) : []),
     [user, isTopUpOpen],

@@ -1,6 +1,5 @@
 import { API_BASE_URL } from '../../config/env';
 
-// La respuesta pasó el tiempo límite y se canceló.
 export class RequestTimeoutError extends Error {
   constructor() {
     super('La solicitud tardó demasiado y se canceló.');
@@ -8,7 +7,7 @@ export class RequestTimeoutError extends Error {
   }
 }
 
-// No hubo respuesta: servidor apagado, sin conexión, CORS, etc.
+// sin respuesta: servidor caído, sin red, CORS...
 export class NetworkError extends Error {
   constructor() {
     super('No se pudo conectar con el servidor.');
@@ -18,7 +17,7 @@ export class NetworkError extends Error {
 
 export interface HttpResponse {
   status: number;
-  // Sin tipo a propósito: quien llama debe validar la forma antes de usarla.
+  // unknown a propósito: quien llama valida la forma
   data: unknown;
 }
 
@@ -26,8 +25,7 @@ interface RequestOptions {
   timeoutMs: number;
 }
 
-// POST con JSON y tiempo límite. No lanza por códigos 4xx/5xx: esas respuestas
-// traen información útil (por ejemplo, un pago rechazado) y quien llama decide.
+// No lanza en 4xx/5xx: SnailPay manda info útil en esos casos (p. ej. un rechazo).
 export async function postJson(
   path: string,
   body: unknown,
@@ -43,7 +41,7 @@ export async function postJson(
       body: JSON.stringify(body),
       signal: controller.signal,
     });
-    // Leer el cuerpo también cuenta dentro del tiempo límite.
+    // leer el body también cuenta para el timeout
     const data: unknown = await response.json().catch(() => null);
     return { status: response.status, data };
   } catch (error) {

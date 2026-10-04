@@ -3,7 +3,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router';
 import { appRoutes } from '../app/router';
 import { AuthProvider } from '../features/auth/AuthProvider';
 
-// Monta la app completa en una ruta dada, con un router en memoria en lugar del navegador.
+// Monta la app con un router en memoria.
 export function renderApp(initialPath: string) {
   const router = createMemoryRouter(appRoutes, { initialEntries: [initialPath] });
   const view = render(

@@ -5,7 +5,6 @@ import { ROUTES } from '../../app/routes';
 import { renderApp } from '../../test/renderApp';
 import { register } from './services/authService';
 
-// Flujo mínimo exigido para que la entrega sea válida, probado de punta a punta en la UI.
 describe('flujo de autenticación', () => {
   it('sin sesión, el panel redirige a iniciar sesión', () => {
     const { router } = renderApp(ROUTES.dashboard);

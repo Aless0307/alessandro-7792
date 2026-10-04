@@ -6,14 +6,13 @@ export interface ColumnDatum {
   id: string;
   label: string;
   value: number;
-  // Elemento que identifica la categoría junto a su nombre (por ejemplo, el caparazón).
+  // p. ej. el caparazón
   icon?: ReactNode;
 }
 
 interface ColumnChartProps {
   data: ColumnDatum[];
   title: string;
-  // Categorías resaltadas; las demás quedan en un tono apagado.
   highlightIds?: string[];
   formatValue: (value: number) => string;
 }
@@ -64,7 +63,7 @@ export function ColumnChart({ data, title, highlightIds = [], formatValue }: Col
                       <span>{formatValue(datum.value)}</span>
                     </div>
                   )}
-                  {/* Solo se rotulan las columnas resaltadas; el resto lo cubren el eje y el tooltip. */}
+                  {/* solo se rotulan las resaltadas */}
                   {isHighlighted && datum.value > 0 && (
                     <span className={styles.capLabel}>{datum.value}</span>
                   )}

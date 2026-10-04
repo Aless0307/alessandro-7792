@@ -1,5 +1,4 @@
-// Envoltura tipada de localStorage. Todas las claves de la app pasan por aquí,
-// con un prefijo común y sin que un JSON corrupto o un navegador bloqueado rompa la app.
+// Wrapper de localStorage: todas las claves llevan el prefijo y un JSON corrupto no rompe la app.
 const PREFIX = 'snailbet:';
 
 export const STORAGE_KEYS = {
@@ -27,6 +26,6 @@ export function removeItem(key: StorageKey): void {
   try {
     localStorage.removeItem(PREFIX + key);
   } catch {
-    // Si el almacenamiento no está disponible no hay nada que borrar.
+    // sin acceso a localStorage no hay nada que borrar
   }
 }

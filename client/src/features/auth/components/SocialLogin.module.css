@@ -4,7 +4,6 @@
   margin-top: var(--space-6);
 }
 
-/* Texto centrado entre dos líneas. */
 .divider {
   display: flex;
   align-items: center;

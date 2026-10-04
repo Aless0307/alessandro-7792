@@ -10,7 +10,6 @@ export interface DonutSegment {
 
 interface DonutChartProps {
   segments: DonutSegment[];
-  // Lo que se muestra al centro cuando no hay un segmento señalado.
   centerValue: string;
   centerLabel: string;
   title: string;
@@ -20,7 +19,7 @@ const SIZE = 200;
 const RADIUS = 80;
 const THICKNESS = 22;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-// Espacio del color de la superficie entre segmentos, en lugar de un borde.
+// hueco entre segmentos en lugar de borde
 const GAP = 3;
 
 export function DonutChart({ segments, centerValue, centerLabel, title }: DonutChartProps) {
@@ -92,7 +91,6 @@ export function DonutChart({ segments, centerValue, centerLabel, title }: DonutC
         ))}
       </ul>
 
-      {/* Equivalente en tabla para lectores de pantalla. */}
       <table className="sr-only">
         <caption>{title}</caption>
         <tbody>

@@ -9,7 +9,7 @@ export interface Notice {
 
 const BALANCE_UNCHANGED = 'Tu saldo no cambió.';
 
-// Mensaje para cada resultado que no es un cobro aprobado. Siempre aclara que el saldo no cambió.
+// Todo lo que no es un aprobado. Siempre se aclara que el saldo no cambió.
 export function getOutcomeNotice(outcome: Exclude<ChargeOutcome, { kind: 'approved' }>): Notice {
   switch (outcome.kind) {
     case 'rejected':

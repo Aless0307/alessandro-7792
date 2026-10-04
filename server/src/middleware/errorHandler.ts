@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-// Express reconoce un middleware de errores por tener 4 parámetros, aunque no se use `next`.
+// Express reconoce el handler de errores por los 4 parámetros, aunque next no se use
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
   if (isJsonParseError(err)) {
     res.status(400).json({ message: 'El cuerpo de la petición no es un JSON válido.' });

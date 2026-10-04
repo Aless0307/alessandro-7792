@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import type { ChargeResponse } from '@snail/shared';
+import { useEffect, useRef, useState } from 'react';
+import { SNAILPAY_MAX_AMOUNT, type ChargeResponse } from '@snail/shared';
 import { Button } from '../../../components/ui/Button';
 import { Modal } from '../../../components/ui/Modal';
 import { TextField } from '../../../components/ui/TextField';
 import { useZodForm } from '../../../lib/forms/useZodForm';
-import { formatCurrency } from '../../../lib/format';
+import { formatCurrency, formatWholeCurrency } from '../../../lib/format';
 import type { User } from '../../auth/types';
 import { formatAmount, formatCardNumber, formatCvv, formatExpirationDate } from '../cardFormat';
 import { getOutcomeNotice, type Notice } from '../outcomeNotice';
@@ -24,7 +24,7 @@ const QUICK_AMOUNTS = [100, 250, 500, 1000];
 interface TopUpDialogProps {
   user: User;
   onClose: () => void;
-  // Se llama en cuanto se acredita el saldo, para que el panel lo muestre de inmediato.
+  // para que el saldo del panel cambie sin esperar a cerrar el modal
   onBalanceChange: () => void;
 }
 
@@ -32,9 +32,23 @@ export function TopUpDialog({ user, onClose, onBalanceChange }: TopUpDialogProps
   const [phase, setPhase] = useState<Phase>({ kind: 'form', notice: null });
   const form = useZodForm(topUpFormSchema, EMPTY_TOP_UP_FORM);
   const isSubmitting = phase.kind === 'submitting';
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // Si el usuario bajó hasta las tarjetas de prueba, el resultado quedaría fuera de vista:
+  // se lleva hasta él y se le pasa el foco para que también lo lean los lectores de pantalla.
+  useEffect(() => {
+    if (phase.kind === 'submitting') return;
+    if (phase.kind === 'form' && !phase.notice) return;
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    resultRef.current?.scrollIntoView?.({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+    resultRef.current?.focus({ preventScroll: true });
+  }, [phase]);
 
   const onSubmit = form.handleSubmit(async (data) => {
-    // Evita un segundo cobro por doble clic.
+    // doble clic
     if (isSubmitting) return;
     setPhase({ kind: 'submitting' });
 
@@ -50,7 +64,9 @@ export function TopUpDialog({ user, onClose, onBalanceChange }: TopUpDialogProps
   if (phase.kind === 'success') {
     return (
       <Modal title="Recargar saldo" onClose={onClose}>
-        <TopUpSuccess response={phase.response} balance={phase.balance} onDone={onClose} />
+        <div ref={resultRef} tabIndex={-1} className={styles.result}>
+          <TopUpSuccess response={phase.response} balance={phase.balance} onDone={onClose} />
+        </div>
       </Modal>
     );
   }
@@ -63,7 +79,7 @@ export function TopUpDialog({ user, onClose, onBalanceChange }: TopUpDialogProps
     <Modal title="Recargar saldo" onClose={onClose} canClose={!isSubmitting}>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {notice && (
-          <div role="alert" className={styles.notice}>
+          <div ref={resultRef} tabIndex={-1} role="alert" className={styles.notice}>
             <strong>{notice.title}</strong>
             <p>{notice.message}</p>
             {notice.reference && <p className={styles.reference}>Referencia {notice.reference}</p>}
@@ -103,7 +119,7 @@ export function TopUpDialog({ user, onClose, onBalanceChange }: TopUpDialogProps
             label="Monto a recargar (MXN)"
             inputMode="decimal"
             placeholder="0.00"
-            hint="Máximo $10,000 por recarga."
+            hint={`Máximo ${formatWholeCurrency(SNAILPAY_MAX_AMOUNT)} por recarga.`}
             {...form.fieldProps('amount', { format: formatAmount })}
           />
           <div className={styles.quickAmounts} role="group" aria-label="Montos rápidos">

@@ -36,7 +36,7 @@ export const registerSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
     message: 'Las contraseñas no coinciden.',
-    // Sin esto, Zod omite la comparación mientras otro campo tenga errores.
+    // sin esto Zod no compara mientras otro campo tenga errores
     when: ({ value }) => {
       const data = value as { password?: unknown; confirmPassword?: unknown };
       return typeof data.password === 'string' && typeof data.confirmPassword === 'string';

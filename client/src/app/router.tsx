@@ -8,7 +8,7 @@ import { ROUTES } from './routes';
 
 export const appRoutes: RouteObject[] = [
   {
-    // Si algo falla al mostrar cualquier pantalla, se ve ErrorPage en lugar de una pantalla rota.
+    // si algo falla al renderizar se muestra ErrorPage
     errorElement: <ErrorPage />,
     children: [
       { path: '/', element: <Navigate to={ROUTES.dashboard} replace /> },

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
-// Contrato de SnailPay, la pasarela de pagos simulada. Lo usan el backend (para validar)
-// y el frontend (para validar el formulario y tipar la respuesta).
+// Contrato de SnailPay, compartido por front y back.
 
 export const SNAILPAY_MAX_AMOUNT = 10_000;
 
@@ -26,8 +25,7 @@ export const cardholderNameSchema = z
   .min(1, 'Escribe el nombre como aparece en la tarjeta.')
   .max(80, 'Usa como máximo 80 caracteres.');
 
-// El monto llega en pesos, con 2 decimales como máximo. El límite por recarga es una regla
-// de negocio (se rechaza con su propio motivo), no un error de formato.
+// El límite por recarga no va aquí: es regla de negocio y tiene su propio rechazo.
 export const amountSchema = z
   .number({ error: 'El monto debe ser un número.' })
   .positive('El monto debe ser mayor que cero.')
@@ -69,13 +67,11 @@ export const chargeStatusDetailSchema = z.enum([
 
 export const fieldErrorSchema = z.object({ field: z.string(), message: z.string() });
 
-// Forma de toda respuesta de SnailPay. El frontend la valida al recibirla:
-// no se confía en una respuesta que no cumpla el contrato.
+// El front valida cada respuesta con esto antes de usarla.
 export const chargeResponseSchema = z.object({
   id: z.string(),
   status: chargeStatusSchema,
   status_detail: chargeStatusDetailSchema,
-  // Texto listo para mostrar al usuario.
   message: z.string(),
   transaction_amount: z.number().nullable(),
   date_created: z.string(),
@@ -83,7 +79,7 @@ export const chargeResponseSchema = z.object({
   reference: z.string(),
   payer_id: z.string().nullable(),
   payer_email: z.string().nullable(),
-  // El enunciado pide devolverlos; siempre son datos ficticios de prueba.
+  // se devuelven a propósito; siempre son datos de prueba
   card_number: z.string().nullable(),
   cvv: z.string().nullable(),
   // Solo cuando status_detail es 'invalid_data'.

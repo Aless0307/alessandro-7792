@@ -5,7 +5,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   hint?: ReactNode;
-  // Elemento dentro del input, a la derecha (por ejemplo, mostrar contraseña).
+  // p. ej. el botón de mostrar contraseña
   trailing?: ReactNode;
 }
 

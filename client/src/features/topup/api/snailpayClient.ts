@@ -2,7 +2,6 @@ import { chargeResponseSchema, type ChargeRequest, type ChargeResponse } from '@
 import { SNAILPAY_TIMEOUT_MS } from '../../../config/env';
 import { NetworkError, RequestTimeoutError, postJson } from '../../../lib/api/httpClient';
 
-// Todo lo que puede pasar al pedir un cobro, ya clasificado para la interfaz.
 export type ChargeOutcome =
   | { kind: 'approved'; response: ChargeResponse }
   | { kind: 'rejected'; response: ChargeResponse }
@@ -27,13 +26,13 @@ export async function requestCharge(
     return { kind: 'unexpected' };
   }
 
-  // Nunca se confía en una respuesta que no cumple el contrato.
+  // si no cumple el contrato, no se usa
   const parsed = chargeResponseSchema.safeParse(data);
   if (!parsed.success) return { kind: 'unexpected' };
   const response = parsed.data;
 
   if (response.status === 'approved') {
-    // Para evitar falsos cobros exitosos, un aprobado debe ser coherente de punta a punta.
+    // un aprobado tiene que cuadrar en todo, si no se descarta
     const isConsistent =
       status === APPROVED_HTTP_STATUS &&
       response.authorization_code !== null &&

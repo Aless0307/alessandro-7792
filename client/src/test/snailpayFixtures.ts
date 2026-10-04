@@ -1,7 +1,7 @@
 import type { ChargeResponse } from '@snail/shared';
 import { vi } from 'vitest';
 
-// Respuestas de SnailPay con la misma forma que devuelve el servidor real.
+// misma forma que la respuesta real del server
 export function chargeResponse(overrides: Partial<ChargeResponse> = {}): ChargeResponse {
   return {
     id: `pay_${Math.random().toString(36).slice(2)}`,
@@ -20,7 +20,6 @@ export function chargeResponse(overrides: Partial<ChargeResponse> = {}): ChargeR
   };
 }
 
-// Sustituye fetch por uno que responde con el cuerpo y el estado HTTP indicados.
 export function stubFetchResponse(body: unknown, status: number) {
   const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(body), { status }));
   vi.stubGlobal('fetch', fetchMock);

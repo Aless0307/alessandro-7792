@@ -1,3 +1,4 @@
+import { SNAILPAY_MAX_AMOUNT } from '@snail/shared';
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import { createApp } from '../../app';
@@ -30,7 +31,7 @@ const REQUIRED_FIELDS = [
 
 describe('POST /api/snailpay/charges', () => {
   describe('cobro exitoso', () => {
-    it('aprueba la tarjeta de prueba del enunciado', async () => {
+    it('aprueba la tarjeta de prueba 1234 1234 1234 1234', async () => {
       const res = await charge(validCharge);
 
       expect(res.status).toBe(201);
@@ -79,7 +80,7 @@ describe('POST /api/snailpay/charges', () => {
     });
 
     it('rechaza montos mayores al límite por recarga', async () => {
-      const res = await charge({ ...validCharge, amount: 10_000.01 });
+      const res = await charge({ ...validCharge, amount: SNAILPAY_MAX_AMOUNT + 0.01 });
 
       expect(res.status).toBe(402);
       expect(res.body.status_detail).toBe('amount_limit_exceeded');

@@ -1,6 +1,6 @@
 import type { PasswordHash } from './services/passwordHasher';
 
-// Lo que se guarda en localStorage. Nunca incluye la contraseña en texto plano.
+// Como se guarda en localStorage (la contraseña solo como hash).
 export interface StoredUser {
   id: string;
   fullName: string;
@@ -10,7 +10,7 @@ export interface StoredUser {
   createdAt: string;
 }
 
-// Lo que la UI puede ver del usuario: sin datos de la contraseña.
+// Lo que usa la UI, sin el hash.
 export type User = Omit<StoredUser, 'password'>;
 
 export interface Session {

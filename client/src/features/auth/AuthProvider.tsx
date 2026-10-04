@@ -5,7 +5,7 @@ import type { User } from './types';
 import type { LoginInput, RegisterInput } from './validation';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Se lee la sesión guardada al montar: así el usuario sigue dentro tras recargar.
+  // se lee la sesión guardada al montar, por eso sobrevive a un F5
   const [user, setUser] = useState<User | null>(() => authService.getCurrentUser());
 
   const register = useCallback(async (input: RegisterInput) => {

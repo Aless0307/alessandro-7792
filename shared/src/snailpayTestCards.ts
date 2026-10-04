@@ -1,7 +1,6 @@
 import type { ChargeStatus, ChargeStatusDetail } from './snailpay';
 
-// Tarjetas de prueba de SnailPay (todas ficticias). Única fuente para el servidor, que decide
-// el resultado con ellas, y para el frontend, que las ofrece para reproducir cada escenario.
+// El server decide el resultado con estas tarjetas y el front las ofrece en "Tarjetas de prueba".
 
 export type TestCardOutcome =
   | { kind: 'approved' }

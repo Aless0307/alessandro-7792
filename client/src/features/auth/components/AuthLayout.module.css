@@ -5,7 +5,6 @@
   padding: var(--space-4);
 }
 
-/* Tarjeta contenida: formulario a la izquierda, escena enmarcada a la derecha. */
 .card {
   width: 100%;
   max-width: 1120px;
@@ -25,13 +24,12 @@
 .formSide {
   display: flex;
   flex-direction: column;
-  /* "safe": si el contenido no cabe (registro), no se corta por arriba. */
+  /* safe: si no cabe (registro) no se corta arriba */
   justify-content: safe center;
   padding: var(--space-6);
   overflow-y: auto;
 }
 
-/* Logo y formulario comparten la misma columna para quedar alineados. */
 .brand,
 .formInner {
   width: 100%;
@@ -39,7 +37,6 @@
   margin: 0 auto;
 }
 
-/* Encabezado de marca: logo y frase centrados sobre el formulario. */
 .brand {
   display: grid;
   justify-items: center;
@@ -61,7 +58,7 @@
   background: #6c9674;
 }
 
-/* Ventanas angostas: una sola columna centrada, escena arriba. */
+/* angosto: una columna, escena arriba */
 @media (max-width: 760px) {
   .page {
     place-items: start center;
@@ -90,7 +87,6 @@
   }
 }
 
-/* Teléfonos: la tarjeta ocupa toda la pantalla. */
 @media (max-width: 480px) {
   .page {
     padding: 0;

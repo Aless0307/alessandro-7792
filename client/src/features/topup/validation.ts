@@ -7,8 +7,7 @@ import {
 } from '@snail/shared';
 import { z } from 'zod';
 
-// Formulario de recarga: reutiliza las reglas del contrato de SnailPay. El límite de $10,000
-// no se valida aquí a propósito: es una regla de negocio de la pasarela y la responde ella.
+// El límite por recarga no se valida aquí: lo rechaza SnailPay con su propio motivo.
 export const topUpFormSchema = z.object({
   card_number: cardNumberSchema,
   expiration_date: expirationDateSchema,

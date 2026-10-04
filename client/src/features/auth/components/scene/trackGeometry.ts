@@ -1,5 +1,4 @@
-// Geometría de la pista en perspectiva: una curva en S que va del primer plano (t = 0)
-// hasta el horizonte (t = 1), cada vez más angosta. Todo en unidades del viewBox de la escena.
+// Pista en perspectiva: t = 0 es el frente y t = 1 el horizonte. Todo en unidades del viewBox.
 export const SCENE_WIDTH = 600;
 export const SCENE_HEIGHT = 800;
 export const HORIZON_Y = 352;
@@ -9,7 +8,7 @@ const NEAR_Y = 830;
 const NEAR_WIDTH = 620;
 const FAR_WIDTH = 46;
 
-// Tramo de la pista que recorre el caracol del usuario: de la salida a la meta.
+// tramo que recorre el caracol del usuario
 export const START_T = 0.08;
 export const FINISH_T = 0.82;
 
@@ -18,7 +17,7 @@ export interface Point {
   y: number;
 }
 
-// Lo cercano ocupa más pantalla que lo lejano: la altura se comprime hacia el horizonte.
+// lo cercano ocupa más pantalla que lo lejano
 function depth(t: number): number {
   return (1 - t) ** 1.9;
 }
@@ -33,13 +32,12 @@ export function trackWidth(t: number): number {
   return FAR_WIDTH + (NEAR_WIDTH - FAR_WIDTH) * depth(t);
 }
 
-// Punto sobre el borde k (0 a LANE_COUNT) o sobre el centro de un carril (k = carril + 0.5).
+// k = número de borde (0..LANE_COUNT); para el centro de un carril usa carril + 0.5
 export function pointOnTrack(t: number, k: number): Point {
   const center = trackCenter(t);
   return { x: center.x + (k / LANE_COUNT - 0.5) * trackWidth(t), y: center.y };
 }
 
-// Escala de un objeto a la distancia t, relativa al primer plano.
 export function scaleAt(t: number): number {
   return trackWidth(t) / NEAR_WIDTH;
 }
@@ -51,7 +49,7 @@ export function progressToT(progress: number): number {
 
 const SAMPLES = 48;
 
-// Polígono SVG de un carril: borde izquierdo hacia el horizonte y derecho de regreso.
+// borde izquierdo de ida y el derecho de vuelta
 export function lanePath(lane: number): string {
   const left: Point[] = [];
   const right: Point[] = [];
@@ -64,7 +62,6 @@ export function lanePath(lane: number): string {
   return `M${points.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L')} Z`;
 }
 
-// Línea que separa carriles, del primer plano al horizonte.
 export function edgePath(k: number): string {
   const points: Point[] = [];
   for (let i = 0; i <= SAMPLES; i++) points.push(pointOnTrack(i / SAMPLES, k));

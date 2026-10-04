@@ -26,7 +26,6 @@ export function LoginPage() {
     try {
       await login(data);
     } catch (error) {
-      // Si falla, el caracol regresa a donde estaba: la pista refleja el resultado.
       setFormError(
         error instanceof AuthError ? error.message : 'No se pudo iniciar sesión. Intenta de nuevo.',
       );

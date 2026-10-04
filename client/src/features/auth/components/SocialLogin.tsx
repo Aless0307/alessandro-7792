@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './SocialLogin.module.css';
 
-// Solo visual: la app no tiene proveedores externos. Al hacer clic se explica en lugar de no responder.
+// Solo visual, no hay login social. Al hacer clic avisa en vez de no hacer nada.
 const PROVIDERS = [
   { id: 'google', label: 'Google', icon: <GoogleIcon /> },
   { id: 'apple', label: 'Apple', icon: <AppleIcon /> },

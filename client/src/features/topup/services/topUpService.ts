@@ -6,8 +6,7 @@ import { recordCharge } from './chargeHistory';
 
 export type TopUpResult = ChargeOutcome & { balance: number };
 
-// Recarga de saldo: pide el cobro a SnailPay, guarda la operación y acredita el saldo
-// solo si el cobro se aprobó. En cualquier otro caso el saldo no se toca.
+// Solo se acredita si SnailPay aprobó; en cualquier otro caso el saldo queda igual.
 export async function topUp(user: User, form: TopUpFormData): Promise<TopUpResult> {
   const outcome = await requestCharge({
     ...form,
@@ -24,7 +23,7 @@ export async function topUp(user: User, form: TopUpFormData): Promise<TopUpResul
     return { ...outcome, balance: user.balance };
   }
 
-  // requestCharge ya comprobó que el monto aprobado es el mismo que se pidió.
+  // requestCharge ya validó que el monto aprobado es el pedido
   const updated = creditBalance(user.id, form.amount);
   return { ...outcome, balance: updated.balance };
 }

@@ -1,7 +1,5 @@
 import { SNAILS } from './snails';
 
-// Simulación de un día de carreras. Es determinista por fecha: el mismo día siempre
-// produce los mismos resultados, así que no cambian al recargar ni entre pantallas.
 export const RACES_PER_DAY = 6;
 
 export interface RaceResult {
@@ -14,6 +12,7 @@ export interface RaceDay {
   races: RaceResult[];
 }
 
+// determinista por fecha: el mismo día siempre da los mismos resultados
 export function simulateRaceDay(date: Date): RaceDay {
   const dateKey = toDateKey(date);
   const random = createSeededRandom(hashString(dateKey));
@@ -26,7 +25,7 @@ export function simulateRaceDay(date: Date): RaceDay {
   return { date: dateKey, races };
 }
 
-// Victorias por caracol, incluidos los que no ganaron ninguna. Siempre suman RACES_PER_DAY.
+// incluye a los que no ganaron; siempre suman RACES_PER_DAY
 export function countWins(day: RaceDay): { snailId: string; wins: number }[] {
   return SNAILS.map((snail) => ({
     snailId: snail.id,
@@ -40,7 +39,7 @@ export function toDateKey(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-// Mulberry32: generador pseudoaleatorio pequeño y reproducible a partir de una semilla.
+// Mulberry32: PRNG chico con semilla
 export function createSeededRandom(seed: number): () => number {
   let state = seed >>> 0;
   return () => {
@@ -52,7 +51,7 @@ export function createSeededRandom(seed: number): () => number {
   };
 }
 
-// FNV-1a: convierte un texto (fecha, id de usuario) en una semilla numérica estable.
+// FNV-1a, para sacar una semilla de un string
 export function hashString(value: string): number {
   let hash = 2166136261;
   for (let i = 0; i < value.length; i++) {

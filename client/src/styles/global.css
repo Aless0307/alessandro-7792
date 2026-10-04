@@ -1,5 +1,4 @@
-/* Tokens de diseño: cualquier color, tipografía, espacio o radio de la app sale de aquí.
-   Paleta "jardín después de la lluvia": musgo, helecho, rocío, caparazón y hortensia. */
+/* Tokens de diseño */
 :root {
   --moss-900: #17302a;
   --moss-800: #1d3a32;
@@ -26,7 +25,7 @@
   --color-danger-bg: #fbecec;
   --color-focus: var(--hydrangea-400);
 
-  /* Gráficas: validados con el script del skill de dataviz (contraste y daltonismo). */
+  /* gráficas: revisados para contraste y daltonismo */
   --chart-won: #2a8c5c;
   --chart-lost: #7b7fc8;
   --chart-muted: #b7c4bb;
@@ -107,7 +106,7 @@ input {
   }
 }
 
-/* Oculto a la vista pero disponible para lectores de pantalla (tablas equivalentes de las gráficas). */
+/* solo para lectores de pantalla */
 .sr-only {
   position: absolute;
   width: 1px;
