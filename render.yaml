@@ -1,0 +1,16 @@
+# Despliegue en Render (https://render.com) como un solo servicio web:
+# Express sirve la API (/api/*) y el frontend compilado.
+services:
+  - type: web
+    name: alessandro-7792
+    runtime: node
+    plan: free
+    # --include=dev: el build necesita TypeScript, Vite y tsup aunque NODE_ENV sea production.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: '24'
