@@ -1,5 +1,4 @@
 import {
-  SNAILPAY_MAX_AMOUNT,
   SNAILPAY_TEST_CARDS,
   type ChargeStatusDetail,
   type TestCard,
@@ -29,18 +28,9 @@ export const MESSAGES: Record<ChargeStatusDetail, string> = {
   insufficient_funds:
     'La tarjeta no tiene fondos suficientes. Prueba con otra tarjeta o un monto menor.',
   expired_card: 'La tarjeta está vencida. Usa una tarjeta vigente.',
-  amount_limit_exceeded: `El monto supera el límite de ${formatPesos(SNAILPAY_MAX_AMOUNT)} por recarga. Prueba con un monto menor.`,
   unknown_card: 'SnailPay no reconoce esta tarjeta. Revisa el número o usa otra tarjeta.',
   service_unavailable:
     'SnailPay tiene un problema y no pudo procesar el pago. No se hizo ningún cargo; intenta más tarde.',
   gateway_timeout:
     'SnailPay tardó demasiado en responder. No se hizo ningún cargo; intenta más tarde.',
 };
-
-function formatPesos(amount: number): string {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}

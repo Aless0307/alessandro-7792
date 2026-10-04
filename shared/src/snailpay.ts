@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 // Contrato de SnailPay, compartido por front y back.
 
-export const SNAILPAY_MAX_AMOUNT = 10_000;
-
 export const cardNumberSchema = z
   .string()
   .transform((value) => value.replace(/\s+/g, ''))
@@ -25,7 +23,6 @@ export const cardholderNameSchema = z
   .min(1, 'Escribe el nombre como aparece en la tarjeta.')
   .max(80, 'Usa como máximo 80 caracteres.');
 
-// El límite por recarga no va aquí: es regla de negocio y tiene su propio rechazo.
 export const amountSchema = z
   .number({ error: 'El monto debe ser un número.' })
   .positive('El monto debe ser mayor que cero.')
@@ -59,7 +56,6 @@ export const chargeStatusDetailSchema = z.enum([
   'card_declined',
   'insufficient_funds',
   'expired_card',
-  'amount_limit_exceeded',
   'unknown_card',
   'service_unavailable',
   'gateway_timeout',

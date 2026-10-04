@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { SNAILPAY_MAX_AMOUNT, type ChargeResponse } from '@snail/shared';
+import type { ChargeResponse } from '@snail/shared';
 import { Button } from '../../../components/ui/Button';
 import { Modal } from '../../../components/ui/Modal';
 import { TextField } from '../../../components/ui/TextField';
 import { useZodForm } from '../../../lib/forms/useZodForm';
-import { formatCurrency, formatWholeCurrency } from '../../../lib/format';
+import { formatCurrency } from '../../../lib/format';
 import type { User } from '../../auth/types';
 import { formatAmount, formatCardNumber, formatCvv, formatExpirationDate } from '../cardFormat';
 import { getOutcomeNotice, type Notice } from '../outcomeNotice';
@@ -119,7 +119,6 @@ export function TopUpDialog({ user, onClose, onBalanceChange }: TopUpDialogProps
             label="Monto a recargar (MXN)"
             inputMode="decimal"
             placeholder="0.00"
-            hint={`Máximo ${formatWholeCurrency(SNAILPAY_MAX_AMOUNT)} por recarga.`}
             {...form.fieldProps('amount', { format: formatAmount })}
           />
           <div className={styles.quickAmounts} role="group" aria-label="Montos rápidos">

@@ -1,4 +1,3 @@
-import { SNAILPAY_MAX_AMOUNT } from '@snail/shared';
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import { createApp } from '../../app';
@@ -79,11 +78,11 @@ describe('POST /api/snailpay/charges', () => {
       expect(wrongDate.body.status_detail).toBe('invalid_card_data');
     });
 
-    it('rechaza montos mayores al límite por recarga', async () => {
-      const res = await charge({ ...validCharge, amount: SNAILPAY_MAX_AMOUNT + 0.01 });
+    it('aprueba montos altos con la tarjeta de prueba', async () => {
+      const res = await charge({ ...validCharge, amount: 50_000 });
 
-      expect(res.status).toBe(402);
-      expect(res.body.status_detail).toBe('amount_limit_exceeded');
+      expect(res.status).toBe(201);
+      expect(res.body).toMatchObject({ status: 'approved', transaction_amount: 50_000 });
     });
 
     it('rechaza datos mal formados indicando el error de cada campo', async () => {

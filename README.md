@@ -102,21 +102,20 @@ Todas las respuestas (aprobadas, rechazadas y de error) tienen la misma forma:
 
 ### Cómo reproducir cada escenario
 
-Salvo que se indique otra cosa, usar fecha `12/26`, CVV `543`, cualquier nombre y un monto entre $0.01 y $10,000.
+Salvo que se indique otra cosa, usar fecha `12/26`, CVV `543`, cualquier nombre y cualquier monto mayor que cero.
 
-| Escenario            | Cómo provocarlo                                           | HTTP | `status`   | `status_detail`         |
-| -------------------- | --------------------------------------------------------- | ---- | ---------- | ----------------------- |
-| Cobro exitoso        | Tarjeta `1234123412341234`                                | 201  | `approved` | `accredited`            |
-| Datos de tarjeta     | Tarjeta `1234123412341234` con otra fecha u otro CVV      | 402  | `rejected` | `invalid_card_data`     |
-| Tarjeta rechazada    | Tarjeta `4000000000000002`                                | 402  | `rejected` | `card_declined`         |
-| Fondos insuficientes | Tarjeta `4000000000009995`                                | 402  | `rejected` | `insufficient_funds`    |
-| Tarjeta vencida      | Tarjeta `4000000000000069`                                | 402  | `rejected` | `expired_card`          |
-| Tarjeta desconocida  | Cualquier otro número de 16 dígitos                       | 402  | `rejected` | `unknown_card`          |
-| Límite de monto      | Monto mayor a $10,000                                     | 402  | `rejected` | `amount_limit_exceeded` |
-| Datos inválidos      | Número sin 16 dígitos, CVV sin 3 dígitos, monto ≤ 0, etc. | 422  | `rejected` | `invalid_data`          |
-| Error interno        | Tarjeta `4000000000000500`                                | 503  | `error`    | `service_unavailable`   |
-| SnailPay caído       | `npm run dev:outage` (o `SNAILPAY_FORCE_OUTAGE=true`)     | 503  | `error`    | `service_unavailable`   |
-| Respuesta lenta      | Tarjeta `4000000000000408` (tarda 15 s)                   | 504  | `error`    | `gateway_timeout`       |
+| Escenario            | Cómo provocarlo                                           | HTTP | `status`   | `status_detail`       |
+| -------------------- | --------------------------------------------------------- | ---- | ---------- | --------------------- |
+| Cobro exitoso        | Tarjeta `1234123412341234`                                | 201  | `approved` | `accredited`          |
+| Datos de tarjeta     | Tarjeta `1234123412341234` con otra fecha u otro CVV      | 402  | `rejected` | `invalid_card_data`   |
+| Tarjeta rechazada    | Tarjeta `4000000000000002`                                | 402  | `rejected` | `card_declined`       |
+| Fondos insuficientes | Tarjeta `4000000000009995`                                | 402  | `rejected` | `insufficient_funds`  |
+| Tarjeta vencida      | Tarjeta `4000000000000069`                                | 402  | `rejected` | `expired_card`        |
+| Tarjeta desconocida  | Cualquier otro número de 16 dígitos                       | 402  | `rejected` | `unknown_card`        |
+| Datos inválidos      | Número sin 16 dígitos, CVV sin 3 dígitos, monto ≤ 0, etc. | 422  | `rejected` | `invalid_data`        |
+| Error interno        | Tarjeta `4000000000000500`                                | 503  | `error`    | `service_unavailable` |
+| SnailPay caído       | `npm run dev:outage` (o `SNAILPAY_FORCE_OUTAGE=true`)     | 503  | `error`    | `service_unavailable` |
+| Respuesta lenta      | Tarjeta `4000000000000408` (tarda 15 s)                   | 504  | `error`    | `gateway_timeout`     |
 
 Con la respuesta lenta, el frontend corta la espera a los 8 segundos y muestra un error de tiempo agotado. En ningún escenario distinto al cobro exitoso se modifica el saldo.
 

@@ -1,6 +1,5 @@
 import { randomInt, randomUUID } from 'node:crypto';
 import {
-  SNAILPAY_MAX_AMOUNT,
   chargeRequestSchema,
   type ChargeResponse,
   type ChargeStatus,
@@ -28,13 +27,12 @@ const HTTP_STATUS: Record<ChargeStatusDetail, number> = {
   card_declined: 402,
   insufficient_funds: 402,
   expired_card: 402,
-  amount_limit_exceeded: 402,
   unknown_card: 402,
   service_unavailable: 503,
   gateway_timeout: 504,
 };
 
-// El orden importa: caída forzada → formato → límite de monto → tarjetas de prueba.
+// El orden importa: caída forzada → formato → tarjetas de prueba.
 export async function processCharge(input: unknown, config: SnailPayConfig): Promise<ChargeResult> {
   if (config.forceOutage) {
     return respond('error', 'service_unavailable', echoRawInput(input));
@@ -57,10 +55,6 @@ export async function processCharge(input: unknown, config: SnailPayConfig): Pro
     card_number: request.card_number,
     cvv: request.cvv,
   };
-
-  if (request.amount > SNAILPAY_MAX_AMOUNT) {
-    return respond('rejected', 'amount_limit_exceeded', echo);
-  }
 
   const scenario = TEST_CARDS[request.card_number];
   if (scenario?.kind === 'slow_response') {

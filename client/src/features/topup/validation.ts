@@ -7,7 +7,6 @@ import {
 } from '@snail/shared';
 import { z } from 'zod';
 
-// El límite por recarga no se valida aquí: lo rechaza SnailPay con su propio motivo.
 export const topUpFormSchema = z.object({
   card_number: cardNumberSchema,
   expiration_date: expirationDateSchema,
