@@ -4,6 +4,8 @@ Aplicación web de apuestas en carreras de caracoles: registro e inicio de sesi�
 
 **Stack:** React + Vite · Express · TypeScript · LocalStorage · Vitest
 
+**Demo:** https://alessandro-7792.onrender.com (si el servicio estaba dormido, la primera carga tarda unos 30 segundos)
+
 ## Requisitos
 
 - Node.js 24 o superior (ver `.nvmrc`)
